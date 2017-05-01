@@ -28,8 +28,11 @@ variable piple
     set test_case_number [lindex $index 0]    
     cd ../bin
     set compiling 1
+    puts "batch = $batch."
     if {$batch==0} {
         Run "bash sim.mod runall -c " $output_win
+        #exec "sim_modelsim.bat"
+        #Run "sim_modelsim.bat" $output_win
     } elseif {[catch {open ../data/batch.dat r} fileid]} {
         $output_win insert end  "Failed open ../data/batch.dat file\n" 
     } elseif {[lindex $index 0] == "empty"} {
@@ -52,6 +55,7 @@ variable piple
 proc Run {command output_win} {
     global piple
     if [catch {open "|$command |& cat "} piple] {
+    #if [catch {open $command} piple] {
         $output_win insert end $piple\n
     } else {
         fileevent $piple readable [list Log $piple $output_win]
